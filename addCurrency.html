@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ajax First Task</title>
+	 <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <style>
+    *{
+      margin:0;
+      padding: 0;
+    }
+    body{
+      background-color: lightgray;
+      overflow-x: none;
+    }
+    span{
+      color: red;
+      font-weight: 600;
+    }
+     .currency{
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .navbar{
+      width:100%;
+       background-color: lightgray;
+    }
+    .footer{
+      margin-top: 300px;
+      height: 50px;
+      width: 100%;
+      font-size: 24px;
+      font-weight: 700;
+      bottom: 0;
+       background-color: lightgray;
+    }
+    .container-fluid{
+      margin:0;
+      padding: 0;
+    }
+
+
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+   <nav class="navbar navbar-expand-sm bg-dark navbar-light">
+    <a class="navbar-brand" href="header.html">
+    <img src="dol1.jpg" class="mt-3" width="200" height="50">
+  </a>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item active">
+      <a class="nav-link font-weight-bolder currency text-white" href="index.html"><u>Currencies</u></a>
+    </li>
+  </ul>
+</nav> 
+ 
+		<div class="row mt-5 ml-5 mr-5">
+			<div class="col-4">
+				<div class="form-group">
+				<label for="code" class="text-dark font-weight-bolder">Code<span>*</span></label>
+				<input type="text" id="code" name="code" class="form-control" placeholder="Code">
+				<span class="required" id="codeErrId"></span>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="form-group">
+				<label for="name" class="text-dark font-weight-bolder">Name<span>*</span></label>
+				<input type="text" id="name" name="name" class="form-control" placeholder="Name">
+				<span class="required" id="nameErrId"></span>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="form-group">
+				<label for="status" class="text-dark font-weight-bolder">Status<span>*</span></label>
+				<select name="status" id="status" class="form-control">
+					  <option value="">Choose</option>
+					  <option value="ACTIVE">ACTIVE</option>
+					  <option value="INACTIVE">INACTIVE</option>
+					</select>
+					<span class="required" id="statusErrId"></span>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="form-group">
+				<label for="symbol" class="text-dark font-weight-bolder">Symbol<span>*</span></label>
+				<input type="text" id="symbol" name="symbol" class="form-control" placeholder="Symbol">
+				<span class="required" id="symbolErrId"></span>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="form-group">
+				<label for="conversionRate" class="text-dark font-weight-bolder">Conversion Rate(USD)<span>*</span></label>
+				<input type="number" id="conversionRate" name="conversionRate" class="form-control" placeholder="Conversion Rate">
+				<span class="required" id="conversionRateErrId"></span>
+				</div>
+			</div>
+		</div>
+		<div class="row mr-5">
+			<div class="col-12 mt-3 text-right mr-5">
+				<button type="submit" class="btn btn-lg btn-primary font-weight-bold" onclick="submit()">Save</button>
+				<button type="reset" class="btn btn-lg btn-danger font-weight-bold ml-2">Reset</button>
+			</div>
+		</div>
+		<div class="row">
+		<div class="col-12">
+			<span id="data" style="color: blue" class="ml-5"></span>
+		</div>
+		</div>
+
+    <div class="footer bg-dark">
+  <p class="text-center text-white pt-1">Footer</p>
+</div>
+</div>
+
+
+<script>
+  function submit(){
+  	var isErrorThere = false;
+  	var regex = new RegExp("^[a-zA-Z ]");
+    var num = new RegExp("^[0-9]*$");
+
+  	var code = $('#code').val();
+  	if(code == null || code == ""){
+  		$("#codeErrId").html("Code is required");
+  		isErrorThere = true;
+  	}else{
+  		$('#codeErrId').html("");
+  	}
+
+  	var name = $('#name').val();
+  	if(name == null || name == ""){
+  		$("#nameErrId").html("Name is required");
+  		isErrorThere = true;
+  	}else{
+  		if(regex.test(name)){
+  		   $("#nameErrId").html("");
+  		}else{
+  			$("#nameErrId").html("Enter Valid Name");
+  		}
+  	}
+
+  	var status = $('#status').val();
+  	if(status == null || status == ""){
+  		$("#statusErrId").html("Status is required");
+  		isErrorThere = true;
+  	}else{
+  		$("#statusErrId").html("");
+  	}
+
+  	var symbol = $('#symbol').val();
+  	if(symbol == null || symbol == ""){
+  		$("#symbolErrId").html("Symbol is required");
+  		isErrorThere = true;
+  	}else{
+  		$("#symbolErrId").html("");
+  	}
+
+  	var conversionRate = $('#conversionRate').val();
+  	if(conversionRate == null || conversionRate == ""){
+  		$("#conversionRateErrId").html("Conversion Rate is required");
+  		isErrorThere = true;
+  	}else{
+  		if(num.test(conversionRate)){
+  			$("#conversionRateErrId").html("");
+  		}else{
+  			$("#conversionRateErrId").html("Enter Valid Rate");
+  		}
+  	}
+
+  	      if(isErrorThere){
+               return false;
+            }else{
+            	loadDoc();
+            }
+ }
+ var currencyObj = {};
+function loadDoc(){
+	var cRate = $("#conversionRate").val();
+	var int = parseInt(cRate);
+	
+	var obj = {
+    		 code:$("#code").val(),
+         conversionRate:int,
+    		 name:$("#name").val(),
+    		 status:$("#status").val(),
+    		 symbol:$("#symbol").val()
+	};
+	
+  if(currencyObj.id){
+    obj.id = currencyObj.id;
+    var jsonObj = JSON.stringify(obj);
+     $.ajax({
+       url: 'http://101.53.155.156/api/currency/update',
+       type: 'PUT',
+       async: false,
+       dataType: "json", 
+       data:  jsonObj,
+       contentType:'application/json',   
+       success: function (response) { 
+               console.log(response.data);
+               $("#data").val(response.data);
+                $('input[type="text"],input[type="number"],select,textarea').val("");
+                window.location.replace("index.html");
+         }
+       }); 
+     }else{
+      var jsonObj = JSON.stringify(obj);
+      $.ajax({
+         url: 'http://101.53.155.156/api/currency/create',
+         type: 'POST',
+         async: false,
+         dataType: "json", 
+         data:  jsonObj,
+         contentType:'application/json',   
+         success: function (response) { 
+                 console.log(response.data);
+                 $("#data").val(response.data);
+                  $('input[type="text"],input[type="number"],select,textarea').val("");
+                  window.location.replace("index.html");
+          }
+        }); 
+   }
+  	
+ }
+  
+$(document).ready(function(){
+  var url_string = (window.location.href).toLowerCase();
+  var url = new URL(url_string);
+  var id = url.searchParams.get("id");
+  if(null != id && id != ""){
+     $.ajax({
+       url: 'http://101.53.155.156/api/currency/get/'+id,
+       type: 'GET',
+       async: false,
+       dataType: "json", 
+       data: "",     
+       success: function (response) {
+          currencyObj = response.data;
+          console.log(currencyObj);
+          $("#code").val(currencyObj.code);
+          $("#conversionRate").val(currencyObj.conversionRate);
+          $("#name").val(currencyObj.name);
+          $("#status").val(currencyObj.status);
+          $("#symbol").val(currencyObj.symbol);
+       }
+    
+     });
+  }
+
+});
+
+</script>
+
+</body>
+</html>

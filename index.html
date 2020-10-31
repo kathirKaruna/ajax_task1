@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ajax First Task</title>
+	 <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+  	*{
+      margin:0;
+      padding: 0;
+    }
+    body{
+      background-color: lightgray;
+      overflow-x: none;
+    }
+    span{
+      color: red;
+      font-weight: 600;
+    }
+    .currency{
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .navbar{
+      width:100%;
+      background-color: lightgray;
+    }
+    .footer{
+      margin-top: 300px;
+      height: 50px;
+      width: 100%;
+      font-size: 24px;
+      font-weight: 700;
+      bottom: 0;
+       background-color: lightgray;
+    }
+    .wel{
+      margin-top: 100px !important;
+    }
+    .container-fluid{
+      margin:0;
+      padding: 0;
+    }
+    table{
+    max-width: 80%;
+    margin-left: 130px !important;
+    background-image: linear-gradient(45deg,#5E5C5C,#9DC5C3);
+
+  }
+ /* table th{
+    background-color: #045DE9;
+
+  }
+  tbody{
+      background-color: #045DE9;
+  }*/
+
+
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-sm bg-dark navbar-light">
+    <a class="navbar-brand" href="header.html">
+    <img src="dol1.jpg" class="mt-3" width="200" height="50">
+  </a>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item active">
+      <a class="nav-link font-weight-bolder currency text-white" href="index.html"><u>Currencies</u></a>
+    </li>
+  </ul>
+</nav> 
+ 
+ 
+ <div class="container">
+  <div class="col-12 text-right mt-3 mr-5">
+   <a href="addCurrency.html"><button type="button" class="btn btn-primary">Add Currency</button></a>
+ </div>
+   <table class="table table-bordered text-white text-center mt-3">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Symbol</th>
+          <th>ConversionRate</th>
+          <th>Update/Delete</th>
+        </tr>
+      </thead>
+       <tbody id="displayArea">
+       </tbody>
+    </table>
+ </div>
+
+  <div class="row">
+    <div class="col-12">
+      <span id="data" style="color: blue" class="ml-5"></span>
+    </div>
+    </div>
+<div class="footer bg-dark">
+  <p class="text-center text-white pt-1">Footer</p>
+</div>
+</div>
+
+
+<script>
+ var currencyArray = []; 
+$( document ).ready(function() {
+    $.ajax({
+       url: 'http://101.53.155.156/api/currency/get',
+       type: 'GET',
+       async: false,
+       dataType: "json", 
+       data: "",     
+       success: function (response) {
+       $.each(response.data, function(i, object) { 
+         currencyArray.push(object);
+         });
+       }
+    
+ });
+  addTable();
+});
+
+
+var sNo = 1;
+var customId = 1;
+function addTable(){
+  $('#displayArea').empty();
+    for(i = 0; i < currencyArray.length; i++){
+      var currenObj = currencyArray[i];
+       $('#displayArea').append("<tr id='row"+i+"'><td>" + sNo + "</td><td>" + currenObj.name + "</td><td>" + currenObj.code + "</td><td>"+currenObj.symbol + "</td><td>" + currenObj.conversionRate+ "</td><td><span class='editrow' style='cursor:pointer;'><a style='cursor:pointer;color:black' class='fa fa-edit' href='javascript:void(0);'     onclick ='editDetail(\""+currenObj.id+"\");' >Edit</a></span><span><a onclick='deleteRow(\""+currenObj.id+"\");' class='material-icons'style='font-size:30px;color:red;margin-left:30px;cursor:pointer;'>delete</a></span></td></tr>");
+         sNo++;
+         customId++;
+    }  
+}  
+
+ function editDetail(id){ 
+    window.location.href = "addCurrency.html?id="+id;  
+}  
+
+
+function deleteRow(id){
+  $.ajax({
+         url: 'http://101.53.155.156/api/currency/delete/'+id+'/00a6aa31-43f0-4dae-ac47-ecffb16aab50',
+         type: 'DELETE',
+         async: false,
+         dataType: "json", 
+         data:  "",
+         contentType:'application/json',   
+         success: function (response) { 
+           console.log(response);
+          }
+        });
+        addTable(); 
+}
+</script>
+
+</body>
+</html>
